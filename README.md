@@ -2,19 +2,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Giselle 💖</title>
 
 <style>
 body {
   margin: 0;
-  font-family: 'Georgia', serif;
   background: linear-gradient(to bottom, #ffe6f0, #fff);
+  font-family: 'Georgia', serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .card {
@@ -24,12 +25,13 @@ body {
   border-radius: 30px;
   padding: 25px;
   text-align: center;
-  box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+  box-shadow: 0 0 40px rgba(255,105,180,0.4);
+  position: relative;
 }
 
 h1 {
   color: #e75480;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .subtitle {
@@ -40,8 +42,8 @@ h1 {
 
 img {
   width: 100%;
-  border-radius: 20px;
-  margin: 20px 0;
+  border-radius: 22px;
+  margin: 18px 0;
 }
 
 .text {
@@ -50,20 +52,53 @@ img {
   line-height: 1.6;
 }
 
+.buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+}
+
 button {
-  margin-top: 20px;
-  padding: 14px 28px;
+  padding: 14px 26px;
   font-size: 18px;
   border: none;
   border-radius: 30px;
-  background: #e75480;
-  color: white;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(231,84,128,0.4);
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  transform: scale(1.05);
+#yesBtn {
+  background: #e75480;
+  color: white;
+}
+
+#noBtn {
+  background: #ccc;
+}
+
+#message {
+  display: none;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #e75480;
+  font-weight: bold;
+}
+
+/* Falling hearts & flowers */
+.fall {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
@@ -74,28 +109,57 @@ button:hover {
   <h1>My Giselle 💕</h1>
   <div class="subtitle">You are my favorite place to exist</div>
 
-  <!-- TULIP IMAGE (WORKING) -->
-  <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=900&q=80" alt="Tulips">
+  <!-- TULIP IMAGE -->
+  <img src="https://images.pexels.com/photos/36729/tulips-spring-flowers-colorful.jpg" alt="Tulips">
 
   <div class="text">
-    Every laugh. Every memory. Every moment that feels like home.  
-    It’s always been you.  
-    And it will always be you.
+    Every laugh. Every memory. Every moment that feels like home.
+    It’s always been you. And it will always be you.
   </div>
 
-  <!-- PLAY MUSIC BUTTON -->
-  <button onclick="playMusic()">Play Our Song 🎶</button>
+  <div class="buttons">
+    <button id="yesBtn" onclick="yesClicked()">Yes 💖</button>
+    <button id="noBtn" onmouseover="moveNo()">No 🙈</button>
+  </div>
+
+  <div id="message">
+    You chose yes… and honestly, my heart already knew.  
+    I choose you today, tomorrow, and for the rest of my life 💕🌷
+  </div>
 </div>
 
-<!-- AUDIO -->
-<audio id="music">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7c3bffb8d4.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-function playMusic() {
-  const music = document.getElementById("music");
-  music.play();
+let yesScale = 1;
+
+function moveNo() {
+  const noBtn = document.getElementById("noBtn");
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function yesClicked() {
+  const yesBtn = document.getElementById("yesBtn");
+  yesScale += 0.2;
+  if (yesScale <= 1.6) {
+    yesBtn.style.transform = `scale(${yesScale})`;
+  }
+
+  document.getElementById("message").style.display = "block";
+  startFalling();
+}
+
+function startFalling() {
+  setInterval(() => {
+    const el = document.createElement("div");
+    el.className = "fall";
+    el.innerText = Math.random() > 0.5 ? "💖" : "🌷";
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(el);
+
+    setTimeout(() => el.remove(), 6000);
+  }, 300);
 }
 </script>
 
